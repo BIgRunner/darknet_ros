@@ -5,11 +5,11 @@ project(darknet_ros)
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 # Define path of darknet folder here.
-find_path(DARKNET_PATH
+find_path(DARKNET_DISCOVER_PATH
   NAMES "README.md"
-  HINTS "${CMAKE_CURRENT_SOURCE_DIR}/../darknet/")
-message("Darknet path dir = ${DARKNET_PATH}")
-add_definitions(-DDARKNET_FILE_PATH="${DARKNET_PATH}")
+  HINTS "${CMAKE_CURRENT_SOURCE_DIR}/../darknet_discover/")
+message("Darknet discover path dir = ${DARKNET_DISCOVER_PATH}")
+add_definitions(-DDARKNET_FILE_PATH="${DARKNET_DISCOVER_PATH}")
 
 # Find CUDA
 FIND_PACKAGE(CUDA)
@@ -80,8 +80,8 @@ catkin_package(
 )
 
 include_directories(
-  ${DARKNET_PATH}/src
-  ${DARKNET_PATH}/include
+  ${DARKNET_DISCOVER_PATH}/src
+  ${DARKNET_DISCOVER_PATH}/include
   include
   ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
@@ -97,44 +97,53 @@ if (CUDA_FOUND)
     src/YoloObjectDetector.cpp
     src/image_interface.c
 
-    ${DARKNET_PATH}/src/activation_layer.c        ${DARKNET_PATH}/src/im2col.c
-    ${DARKNET_PATH}/src/activations.c             ${DARKNET_PATH}/src/image.c
-    ${DARKNET_PATH}/src/avgpool_layer.c           ${DARKNET_PATH}/src/layer.c
-    ${DARKNET_PATH}/src/batchnorm_layer.c         ${DARKNET_PATH}/src/list.c
-    ${DARKNET_PATH}/src/blas.c                    ${DARKNET_PATH}/src/local_layer.c
-    ${DARKNET_PATH}/src/box.c                     ${DARKNET_PATH}/src/lstm_layer.c
-    ${DARKNET_PATH}/src/col2im.c                  ${DARKNET_PATH}/src/matrix.c
-    ${DARKNET_PATH}/src/connected_layer.c         ${DARKNET_PATH}/src/maxpool_layer.c
-    ${DARKNET_PATH}/src/convolutional_layer.c     ${DARKNET_PATH}/src/network.c
-    ${DARKNET_PATH}/src/cost_layer.c              ${DARKNET_PATH}/src/normalization_layer.c
-    ${DARKNET_PATH}/src/crnn_layer.c              ${DARKNET_PATH}/src/option_list.c
-    ${DARKNET_PATH}/src/crop_layer.c              ${DARKNET_PATH}/src/parser.c
-    ${DARKNET_PATH}/src/cuda.c                    ${DARKNET_PATH}/src/region_layer.c
-    ${DARKNET_PATH}/src/data.c                    ${DARKNET_PATH}/src/reorg_layer.c
-    ${DARKNET_PATH}/src/deconvolutional_layer.c   ${DARKNET_PATH}/src/rnn_layer.c
-    ${DARKNET_PATH}/src/demo.c                    ${DARKNET_PATH}/src/route_layer.c
-    ${DARKNET_PATH}/src/detection_layer.c         ${DARKNET_PATH}/src/shortcut_layer.c
-    ${DARKNET_PATH}/src/dropout_layer.c           ${DARKNET_PATH}/src/softmax_layer.c
-    ${DARKNET_PATH}/src/gemm.c                    ${DARKNET_PATH}/src/tree.c
-    ${DARKNET_PATH}/src/gru_layer.c               ${DARKNET_PATH}/src/utils.c
-    ${DARKNET_PATH}/src/upsample_layer.c          ${DARKNET_PATH}/src/logistic_layer.c
-    ${DARKNET_PATH}/src/l2norm_layer.c            ${DARKNET_PATH}/src/yolo_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/activation_layer.c        ${DARKNET_DISCOVER_PATH}/src/im2col.c
+    ${DARKNET_DISCOVER_PATH}/src/activations.c             ${DARKNET_DISCOVER_PATH}/src/image.c
+    # For image_opencv.cpp
+    ${DARKNET_DISCOVER_PATH}/src/image_opencv.cpp
+    ${DARKNET_DISCOVER_PATH}/src/avgpool_layer.c           ${DARKNET_DISCOVER_PATH}/src/layer.c
+    ${DARKNET_DISCOVER_PATH}/src/batchnorm_layer.c         ${DARKNET_DISCOVER_PATH}/src/list.c
+    ${DARKNET_DISCOVER_PATH}/src/blas.c                    ${DARKNET_DISCOVER_PATH}/src/local_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/box.c                     ${DARKNET_DISCOVER_PATH}/src/lstm_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/col2im.c                  ${DARKNET_DISCOVER_PATH}/src/matrix.c
+    ${DARKNET_DISCOVER_PATH}/src/connected_layer.c         ${DARKNET_DISCOVER_PATH}/src/maxpool_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/convolutional_layer.c     ${DARKNET_DISCOVER_PATH}/src/network.c
+    ${DARKNET_DISCOVER_PATH}/src/cost_layer.c              ${DARKNET_DISCOVER_PATH}/src/normalization_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/crnn_layer.c              ${DARKNET_DISCOVER_PATH}/src/option_list.c
+    ${DARKNET_DISCOVER_PATH}/src/crop_layer.c              ${DARKNET_DISCOVER_PATH}/src/parser.c
+    ${DARKNET_DISCOVER_PATH}/src/cuda.c                    ${DARKNET_DISCOVER_PATH}/src/region_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/data.c                    ${DARKNET_DISCOVER_PATH}/src/reorg_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/deconvolutional_layer.c   ${DARKNET_DISCOVER_PATH}/src/rnn_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/demo.c                    ${DARKNET_DISCOVER_PATH}/src/route_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/detection_layer.c         ${DARKNET_DISCOVER_PATH}/src/shortcut_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/dropout_layer.c           ${DARKNET_DISCOVER_PATH}/src/softmax_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/gemm.c                    ${DARKNET_DISCOVER_PATH}/src/tree.c
+    ${DARKNET_DISCOVER_PATH}/src/gru_layer.c               ${DARKNET_DISCOVER_PATH}/src/utils.c
+    ${DARKNET_DISCOVER_PATH}/src/upsample_layer.c          ${DARKNET_DISCOVER_PATH}/src/logistic_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/l2norm_layer.c            ${DARKNET_DISCOVER_PATH}/src/yolo_layer.c
+    # For discover layer and iseg_layer 
+    ${DARKNET_DISCOVER_PATH}/src/finder_layer.c		   ${DARKNET_DISCOVER_PATH}/src/iseg_layer.c
 
-    ${DARKNET_PATH}/examples/art.c                ${DARKNET_PATH}/examples/lsd.c
-    ${DARKNET_PATH}/examples/attention.c          ${DARKNET_PATH}/examples/nightmare.c
-    ${DARKNET_PATH}/examples/captcha.c            ${DARKNET_PATH}/examples/regressor.c
-    ${DARKNET_PATH}/examples/cifar.c              ${DARKNET_PATH}/examples/rnn.c
-    ${DARKNET_PATH}/examples/classifier.c         ${DARKNET_PATH}/examples/segmenter.c
-    ${DARKNET_PATH}/examples/coco.c               ${DARKNET_PATH}/examples/super.c
-    ${DARKNET_PATH}/examples/darknet.c            ${DARKNET_PATH}/examples/tag.c
-    ${DARKNET_PATH}/examples/detector.c           ${DARKNET_PATH}/examples/yolo.c
-    ${DARKNET_PATH}/examples/go.c
+    ${DARKNET_DISCOVER_PATH}/examples/art.c                ${DARKNET_DISCOVER_PATH}/examples/lsd.c
+    # ${DARKNET_DISCOVER_PATH}/examples/attention.c          
+    ${DARKNET_DISCOVER_PATH}/examples/nightmare.c
+    ${DARKNET_DISCOVER_PATH}/examples/captcha.c            ${DARKNET_DISCOVER_PATH}/examples/regressor.c
+    ${DARKNET_DISCOVER_PATH}/examples/cifar.c              ${DARKNET_DISCOVER_PATH}/examples/rnn.c
+    ${DARKNET_DISCOVER_PATH}/examples/classifier.c         ${DARKNET_DISCOVER_PATH}/examples/segmenter.c
+    ${DARKNET_DISCOVER_PATH}/examples/coco.c               ${DARKNET_DISCOVER_PATH}/examples/super.c
+    ${DARKNET_DISCOVER_PATH}/examples/darknet.c            ${DARKNET_DISCOVER_PATH}/examples/tag.c
+    ${DARKNET_DISCOVER_PATH}/examples/detector.c           ${DARKNET_DISCOVER_PATH}/examples/yolo.c
+    ${DARKNET_DISCOVER_PATH}/examples/go.c
+    # for instance_segmenter.c
+    ${DARKNET_DISCOVER_PATH}/examples/instance-segmenter.c
+    # for discover
+    ${DARKNET_DISCOVER_PATH}/examples/discover.c
 
-    ${DARKNET_PATH}/src/activation_kernels.cu     ${DARKNET_PATH}/src/crop_layer_kernels.cu
-    ${DARKNET_PATH}/src/avgpool_layer_kernels.cu  ${DARKNET_PATH}/src/deconvolutional_kernels.cu
-    ${DARKNET_PATH}/src/blas_kernels.cu           ${DARKNET_PATH}/src/dropout_layer_kernels.cu
-    ${DARKNET_PATH}/src/col2im_kernels.cu         ${DARKNET_PATH}/src/im2col_kernels.cu
-    ${DARKNET_PATH}/src/convolutional_kernels.cu  ${DARKNET_PATH}/src/maxpool_layer_kernels.cu
+    ${DARKNET_DISCOVER_PATH}/src/activation_kernels.cu     ${DARKNET_DISCOVER_PATH}/src/crop_layer_kernels.cu
+    ${DARKNET_DISCOVER_PATH}/src/avgpool_layer_kernels.cu  ${DARKNET_DISCOVER_PATH}/src/deconvolutional_kernels.cu
+    ${DARKNET_DISCOVER_PATH}/src/blas_kernels.cu           ${DARKNET_DISCOVER_PATH}/src/dropout_layer_kernels.cu
+    ${DARKNET_DISCOVER_PATH}/src/col2im_kernels.cu         ${DARKNET_DISCOVER_PATH}/src/im2col_kernels.cu
+    ${DARKNET_DISCOVER_PATH}/src/convolutional_kernels.cu  ${DARKNET_DISCOVER_PATH}/src/maxpool_layer_kernels.cu
   )
 
   target_link_libraries(${PROJECT_NAME}_lib
@@ -161,38 +170,47 @@ else()
     src/YoloObjectDetector.cpp
     src/image_interface.c
 
-    ${DARKNET_PATH}/src/activation_layer.c        ${DARKNET_PATH}/src/im2col.c
-    ${DARKNET_PATH}/src/activations.c             ${DARKNET_PATH}/src/image.c
-    ${DARKNET_PATH}/src/avgpool_layer.c           ${DARKNET_PATH}/src/layer.c
-    ${DARKNET_PATH}/src/batchnorm_layer.c         ${DARKNET_PATH}/src/list.c
-    ${DARKNET_PATH}/src/blas.c                    ${DARKNET_PATH}/src/local_layer.c
-    ${DARKNET_PATH}/src/box.c                     ${DARKNET_PATH}/src/lstm_layer.c
-    ${DARKNET_PATH}/src/col2im.c                  ${DARKNET_PATH}/src/matrix.c
-    ${DARKNET_PATH}/src/connected_layer.c         ${DARKNET_PATH}/src/maxpool_layer.c
-    ${DARKNET_PATH}/src/convolutional_layer.c     ${DARKNET_PATH}/src/network.c
-    ${DARKNET_PATH}/src/cost_layer.c              ${DARKNET_PATH}/src/normalization_layer.c
-    ${DARKNET_PATH}/src/crnn_layer.c              ${DARKNET_PATH}/src/option_list.c
-    ${DARKNET_PATH}/src/crop_layer.c              ${DARKNET_PATH}/src/parser.c
-    ${DARKNET_PATH}/src/cuda.c                    ${DARKNET_PATH}/src/region_layer.c
-    ${DARKNET_PATH}/src/data.c                    ${DARKNET_PATH}/src/reorg_layer.c
-    ${DARKNET_PATH}/src/deconvolutional_layer.c   ${DARKNET_PATH}/src/rnn_layer.c
-    ${DARKNET_PATH}/src/demo.c                    ${DARKNET_PATH}/src/route_layer.c
-    ${DARKNET_PATH}/src/detection_layer.c         ${DARKNET_PATH}/src/shortcut_layer.c
-    ${DARKNET_PATH}/src/dropout_layer.c           ${DARKNET_PATH}/src/softmax_layer.c
-    ${DARKNET_PATH}/src/gemm.c                    ${DARKNET_PATH}/src/tree.c
-    ${DARKNET_PATH}/src/gru_layer.c               ${DARKNET_PATH}/src/utils.c
-    ${DARKNET_PATH}/src/upsample_layer.c          ${DARKNET_PATH}/src/logistic_layer.c
-    ${DARKNET_PATH}/src/l2norm_layer.c            ${DARKNET_PATH}/src/yolo_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/activation_layer.c        ${DARKNET_DISCOVER_PATH}/src/im2col.c
+    ${DARKNET_DISCOVER_PATH}/src/activations.c             ${DARKNET_DISCOVER_PATH}/src/image.c
+    # For image_opencv.cpp
+    ${DARKNET_DISCOVER_PATH}/src/image_opencv.cpp
+    ${DARKNET_DISCOVER_PATH}/src/avgpool_layer.c           ${DARKNET_DISCOVER_PATH}/src/layer.c
+    ${DARKNET_DISCOVER_PATH}/src/batchnorm_layer.c         ${DARKNET_DISCOVER_PATH}/src/list.c
+    ${DARKNET_DISCOVER_PATH}/src/blas.c                    ${DARKNET_DISCOVER_PATH}/src/local_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/box.c                     ${DARKNET_DISCOVER_PATH}/src/lstm_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/col2im.c                  ${DARKNET_DISCOVER_PATH}/src/matrix.c
+    ${DARKNET_DISCOVER_PATH}/src/connected_layer.c         ${DARKNET_DISCOVER_PATH}/src/maxpool_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/convolutional_layer.c     ${DARKNET_DISCOVER_PATH}/src/network.c
+    ${DARKNET_DISCOVER_PATH}/src/cost_layer.c              ${DARKNET_DISCOVER_PATH}/src/normalization_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/crnn_layer.c              ${DARKNET_DISCOVER_PATH}/src/option_list.c
+    ${DARKNET_DISCOVER_PATH}/src/crop_layer.c              ${DARKNET_DISCOVER_PATH}/src/parser.c
+    ${DARKNET_DISCOVER_PATH}/src/cuda.c                    ${DARKNET_DISCOVER_PATH}/src/region_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/data.c                    ${DARKNET_DISCOVER_PATH}/src/reorg_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/deconvolutional_layer.c   ${DARKNET_DISCOVER_PATH}/src/rnn_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/demo.c                    ${DARKNET_DISCOVER_PATH}/src/route_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/detection_layer.c         ${DARKNET_DISCOVER_PATH}/src/shortcut_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/dropout_layer.c           ${DARKNET_DISCOVER_PATH}/src/softmax_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/gemm.c                    ${DARKNET_DISCOVER_PATH}/src/tree.c
+    ${DARKNET_DISCOVER_PATH}/src/gru_layer.c               ${DARKNET_DISCOVER_PATH}/src/utils.c
+    ${DARKNET_DISCOVER_PATH}/src/upsample_layer.c          ${DARKNET_DISCOVER_PATH}/src/logistic_layer.c
+    ${DARKNET_DISCOVER_PATH}/src/l2norm_layer.c            ${DARKNET_DISCOVER_PATH}/src/yolo_layer.c
+    # for finder_layer and iseg_layer
+    ${DARKNET_DISCOVER_PATH}/src/finder_layer.c		   ${DARKNET_DISCOVER_PATH}/src/iseg_layer.c
 
-    ${DARKNET_PATH}/examples/art.c                ${DARKNET_PATH}/examples/lsd.c
-    ${DARKNET_PATH}/examples/attention.c          ${DARKNET_PATH}/examples/nightmare.c
-    ${DARKNET_PATH}/examples/captcha.c            ${DARKNET_PATH}/examples/regressor.c
-    ${DARKNET_PATH}/examples/cifar.c              ${DARKNET_PATH}/examples/rnn.c
-    ${DARKNET_PATH}/examples/classifier.c         ${DARKNET_PATH}/examples/segmenter.c
-    ${DARKNET_PATH}/examples/coco.c               ${DARKNET_PATH}/examples/super.c
-    ${DARKNET_PATH}/examples/darknet.c            ${DARKNET_PATH}/examples/tag.c
-    ${DARKNET_PATH}/examples/detector.c           ${DARKNET_PATH}/examples/yolo.c
-    ${DARKNET_PATH}/examples/go.c
+    ${DARKNET_DISCOVER_PATH}/examples/art.c                ${DARKNET_DISCOVER_PATH}/examples/lsd.c
+    # ${DARKNET_DISCOVER_PATH}/examples/attention.c          
+    ${DARKNET_DISCOVER_PATH}/examples/nightmare.c
+    ${DARKNET_DISCOVER_PATH}/examples/captcha.c            ${DARKNET_DISCOVER_PATH}/examples/regressor.c
+    ${DARKNET_DISCOVER_PATH}/examples/cifar.c              ${DARKNET_DISCOVER_PATH}/examples/rnn.c
+    ${DARKNET_DISCOVER_PATH}/examples/classifier.c         ${DARKNET_DISCOVER_PATH}/examples/segmenter.c
+    ${DARKNET_DISCOVER_PATH}/examples/coco.c               ${DARKNET_DISCOVER_PATH}/examples/super.c
+    ${DARKNET_DISCOVER_PATH}/examples/darknet.c            ${DARKNET_DISCOVER_PATH}/examples/tag.c
+    ${DARKNET_DISCOVER_PATH}/examples/detector.c           ${DARKNET_DISCOVER_PATH}/examples/yolo.c
+    ${DARKNET_DISCOVER_PATH}/examples/go.c
+    # for instance_segmenter.c
+    ${DARKNET_DISCOVER_PATH}/examples/instance-segmenter.c
+    # for discover
+    ${DARKNET_DISCOVER_PATH}/examples/discover.c
   )
 
   target_link_libraries(${PROJECT_NAME}_lib
@@ -236,21 +254,21 @@ install(
 )
 
 # Download yolov2-tiny.weights
-set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
-set(FILE "${PATH}/yolov2-tiny.weights")
-message(STATUS "Checking and downloading yolov2-tiny.weights if needed ...")
-if (NOT EXISTS "${FILE}")
-  message(STATUS "... file does not exist. Downloading now ...")
-  execute_process(COMMAND wget http://pjreddie.com/media/files/yolov2-tiny.weights -P ${PATH})
-endif()
+# set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
+# set(FILE "${PATH}/yolov2-tiny.weights")
+# message(STATUS "Checking and downloading yolov2-tiny.weights if needed ...")
+# if (NOT EXISTS "${FILE}")
+#   message(STATUS "... file does not exist. Downloading now ...")
+#   execute_process(COMMAND wget http://pjreddie.com/media/files/yolov2-tiny.weights -P ${PATH})
+# endif()
 
 # Download yolov3.weights
-set(FILE "${PATH}/yolov3.weights")
-message(STATUS "Checking and downloading yolov3.weights if needed ...")
-if (NOT EXISTS "${FILE}")
-  message(STATUS "... file does not exist. Downloading now ...")
-  execute_process(COMMAND wget http://pjreddie.com/media/files/yolov3.weights -P ${PATH})
-endif()
+# set(FILE "${PATH}/yolov3.weights")
+# message(STATUS "Checking and downloading yolov3.weights if needed ...")
+# if (NOT EXISTS "${FILE}")
+#   message(STATUS "... file does not exist. Downloading now ...")
+#   execute_process(COMMAND wget http://pjreddie.com/media/files/yolov3.weights -P ${PATH})
+# endif()
 
 #############
 ## Testing ##
@@ -258,13 +276,13 @@ endif()
 
 if(CATKIN_ENABLE_TESTING)
   # Download yolov2.weights
-  set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
-  set(FILE "${PATH}/yolov2.weights")
-  message(STATUS "Checking and downloading yolov2.weights if needed ...")
-  if (NOT EXISTS "${FILE}")
-    message(STATUS "... file does not exist. Downloading now ...")
-    execute_process(COMMAND wget http://pjreddie.com/media/files/yolov2.weights -P ${PATH})
-  endif()
+  # set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
+  # set(FILE "${PATH}/yolov2.weights")
+  # message(STATUS "Checking and downloading yolov2.weights if needed ...")
+  # if (NOT EXISTS "${FILE}")
+  #   message(STATUS "... file does not exist. Downloading now ...")
+  #   execute_process(COMMAND wget http://pjreddie.com/media/files/yolov2.weights -P ${PATH})
+  # endif()
 
   find_package(rostest REQUIRED)
 
