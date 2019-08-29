@@ -1,3 +1,6 @@
 [submodule "darknet"]
 	path = darknet
 	url = https://github.com/pjreddie/darknet
+[submodule "darknet_discover"]
+	path = darknet_discover
+	url = git@github.com:BIgRunner/darknet_discover.git
